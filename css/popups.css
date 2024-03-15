@@ -1,0 +1,110 @@
+
+.popup {
+    width: 1050px;
+    height: 90%;
+    border-radius: 20px;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #111;
+    color: white;
+    z-index: 999;
+    border: 5px solid white;
+    padding: 20px;
+    visibility: hidden;
+    overflow-y: auto;
+}
+
+@media (max-width: 1150px) {
+    .popup {
+        width: 550px;
+    }
+}
+
+.popupTitle {
+    text-align: left;
+    font-size: 2em;
+    margin: 10px;
+}
+
+.popupClose {
+    width: 30px;
+    height: 30px;
+    border: 3px solid white;
+    border-radius: 50%;
+    background-color: tomato;
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    cursor: pointer;
+    font-size: 1.5em;
+    text-align: center;
+    line-height: 30px;
+}
+
+.popupClose:hover {
+    background-color: red;
+}
+
+.popupContent {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+}
+
+.popupImgDiv {
+    width: 500px;
+    display: block;
+}
+
+.popupDescriptionDiv {
+    width: 500px;
+    overflow: auto;
+}
+
+.popupDescriptionDiv h2 {
+    text-align: left;
+    font-size: 1.75em;
+    margin-bottom: 5px;
+}
+
+.popupDescriptionDiv p {
+    text-align: left;
+    font: 1.25em 'Roboto', sans-serif;
+    color: lightgray;
+    margin-top: 5px;
+}
+
+.popupSourceBtn {
+    background-color: white;
+    padding: 5px 10px;
+    display: inline-block;
+    border: 3px solid #10072b;
+    border-radius: 10px;
+    cursor: pointer;
+    font: 1em 'Roboto', sans-serif;
+    text-shadow: none;
+    width: 150px;
+}
+
+.popupSourceBtn:hover {
+    background-color: #10072b;
+    color: white;
+    border: 3px solid white;
+}
+
+.popupDownloadImgBtn {
+    background-color: white;
+    padding: 5px 10px;
+    display: inline-block;
+    border: 3px solid #10072b;
+    border-radius: 10px;
+    cursor: pointer;
+    font: 1em 'Roboto', sans-serif;
+    text-shadow: none;
+    width: 150px;
+    margin-left: 175px;
+    margin-right: 175px;
+}

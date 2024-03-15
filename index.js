@@ -48,6 +48,6 @@ onValue(cardsRef, (snapshot) => {
 });
 
 // Done
-webApp.listen(port, () => {
-    console.log(`Server is running at http://localhost:${port}`);
+webApp.listen(process.env.PORT || port, () => {
+    console.log(`Listening to port ${port}`);
 });

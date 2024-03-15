@@ -1,0 +1,14 @@
+@font-face {
+    font-family: 'Ultimatum-Bold';
+    src: url('/res/font/Ultimatum Bold.otf');
+}
+
+@font-face {
+    font-family: 'Ultimatum-Bold-Italic';
+    src: url('/res/font/Ultimatum Bold Italic.otf');
+}
+
+@font-face {
+    font-family: 'BadaBoom';
+    src: url('/res/font/Badaboom.ttf');
+}

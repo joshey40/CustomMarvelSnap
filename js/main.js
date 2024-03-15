@@ -8,17 +8,67 @@ req.onreadystatechange = function() {
         var data = JSON.parse(req.responseText);
         officialCards = data.officialCards;
         customCards = data.customCards;
+        addAllEffectTags();
+        addAllCharacterTags();
         applyFilters();
     }
 };
 req.send();
 
+// effectTags and characterTags
+
+var effectTags = [];
+var characterTags = [];
+
+function addAllEffectTags() {
+    for (var key in officialCards) {
+        var card = officialCards[key];
+        if (card.effectTags != null) {
+            for (var i = 0; i < card.effectTags.length; i++) {
+                if (!effectTags.includes(card.effectTags[i])) {
+                    effectTags.push(card.effectTags[i]);
+                }
+            }
+        }
+    }
+    effectTags.sort();
+    var effectTagsSelect = document.getElementById("effect-tag");
+    effectTagsSelect.innerHTML = "";
+    for (var i = 0; i < effectTags.length; i++) {
+        var option = document.createElement("option");
+        option.value = effectTags[i];
+        option.textContent = effectTags[i];
+        effectTagsSelect.appendChild(option);
+    }
+}
+
+function addAllCharacterTags() {
+    for (var key in officialCards) {
+        var card = officialCards[key];
+        if (card.characterTags != null) {
+            for (var i = 0; i < card.characterTags.length; i++) {
+                if (!characterTags.includes(card.characterTags[i])) {
+                    characterTags.push(card.characterTags[i]);
+                }
+            }
+        }
+    }
+    characterTags.sort();
+    var characterTagsSelect = document.getElementById("character-tag");
+    characterTagsSelect.innerHTML = "";
+    for (var i = 0; i < characterTags.length; i++) {
+        var option = document.createElement("option");
+        option.value = characterTags[i];
+        option.textContent = characterTags[i];
+        characterTagsSelect.appendChild(option);
+    }
+}
 
 // Filtersystem
 
 var filters = {
     search: "",
-    cardType: "All",
+    cardtype: "All",
     sources: "All",
     effectTags: [],
     characterTags: [],
@@ -35,7 +85,7 @@ function changeSearch() {
 }
 
 function changeCardType() {
-    filters.cardType = document.getElementById("cardTypeSelect").value;
+    filters.cardtype = document.getElementById("cardTypeSelect").value;
 
     applyFilters();
 }
@@ -55,7 +105,7 @@ function clearFilters() {
     document.getElementById("order").value = "Name";
     filters = {
         search: "",
-        cardType: "All",
+        cardtype: "All",
         sources: "All",
         effectTags: [],
         characterTags: [],
@@ -84,6 +134,54 @@ function descendOrder() {
     applyFilters();
 }
 
+function addEffectTagFilter() {
+    var tag = document.getElementById("effect-tag").value;
+    var tagDiv = document.createElement("div");
+    tagDiv.textContent = tag;
+    tagDiv.classList.add("tagsDiv");
+
+    if (filters.effectTags.indexOf(tag) == -1) {
+        filters.effectTags.push(tag);
+        var deleteButton = document.createElement("button");
+        deleteButton.textContent = "X";
+        deleteButton.classList.add("tagsDivDelete");
+        deleteButton.onclick = function() {
+            tagDiv.remove();
+            filters.effectTags.splice(filters.effectTags.indexOf(tag), 1);
+            applyFilters();
+        };
+        tagDiv.appendChild(deleteButton);
+    
+        document.getElementById("effect-tags").appendChild(tagDiv);
+
+        applyFilters();
+    }
+}
+
+function addCharacterTagFilter() {
+    var tag = document.getElementById("character-tag").value;
+    var tagDiv = document.createElement("div");
+    tagDiv.textContent = tag;
+    tagDiv.classList.add("tagsDiv");
+
+    if (filters.characterTags.indexOf(tag) == -1) {
+        filters.characterTags.push(tag);
+        var deleteButton = document.createElement("button");
+        deleteButton.textContent = "X";
+        deleteButton.classList.add("tagsDivDelete");
+        deleteButton.onclick = function() {
+            tagDiv.remove();
+            filters.characterTags.splice(filters.characterTags.indexOf(tag), 1);
+            applyFilters();
+        };
+        tagDiv.appendChild(deleteButton);
+    
+        document.getElementById("character-tags").appendChild(tagDiv);
+
+        applyFilters();
+    }
+}
+
 async function applyFilters() {
     if (filterRunning) {
         return;
@@ -99,11 +197,11 @@ async function applyFilters() {
 
     var filteredCards = cards.filter(function(card) {
         return (card.name.toLowerCase().includes(filters.search.toLowerCase())
-        || card.description.toLowerCase().includes(filters.search.toLowerCase()))
-        && (filters.cardType == "All" || card.type == filters.cardType)
+        || card.text.toLowerCase().includes(filters.search.toLowerCase()))
+        && (filters.cardtype == "All" || card.cardtype == filters.cardtype)
         && (filters.sources == "All" || (filters.sources == "custom" && card.custom) || (filters.sources == "official" && !card.custom))
-        && (filters.effectTags.length == 0 || filters.effectTags.every(tag => card.effectTags.includes(tag)))
-        && (filters.characterTags.length == 0 || filters.characterTags.every(tag => card.characterTags.includes(tag)));
+        && (filters.effectTags.length == 0 || (card.effectTags && filters.effectTags.every(tag => card.effectTags.includes(tag))))
+        && (filters.characterTags.length == 0 || (card.characterTags && filters.characterTags.every(tag => card.characterTags.includes(tag))));
     });
 
     if (filters.order == "Name") {
@@ -325,11 +423,19 @@ function closePopup() {
 }
 
 function closeCreateCustomCardPopup() {
-    document.getElementById("createCustomCardPopup").style.visibility = "hidden";
+    // TODO
 }
 
 function openCreateCustomCardPopup() {
-    document.getElementById("createCustomCardPopup").style.visibility = "visible";
+    // TODO
+}
+
+function closeCreateCustomCharacterPopup() {
+    // TODO
+}
+
+function openCreateCustomCharacterPopup() {
+    // TODO
 }
 
 // Create Custom Card

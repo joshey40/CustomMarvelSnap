@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <link href="/css/main.css" rel="stylesheet">
+    <link href="/css/popups.css" rel="stylesheet">
+    <link href="/css/fonts.css" rel="stylesheet">
 </head>
 <body>
     <img src="/res/img/background.png" class="background-img" alt="background">
@@ -31,13 +33,13 @@
                 <select name="effect-tag" id="effect-tag" class="select">
                     <option value="none">None</option>
                 </select>
-                <button onclick="addTagFilter()" class="button">Add</button>
+                <button onclick="addEffectTagFilter()" class="button">Add</button>
                 <div style="display: inline-block;" id="effect-tags"></div>
                 <br>
                 <select name="character-tag" id="character-tag" class="select">
                     <option value="none">None</option>
                 </select>
-                <button onclick="addCharacterFilter()" class="button">Add</button>
+                <button onclick="addCharacterTagFilter()" class="button">Add</button>
                 <div style="display: inline-block;" id="character-tags"></div>
                 <br>
                 <select name="order" id="order" class="select" onchange="changeOrder()">
@@ -51,12 +53,12 @@
             <div class="extras-div">
                 <div>
                     <h1 style="margin: 4px 0px;">Custom</h1>
-                    <button onclick="openCreateCustomVariantPopup()" class="createCustomCardButton">Create a Custom Design</button>
-                    <button onclick="openCreateCustomCardPopup()" class="createCustomCardButton">Create a Custom Card</button>
+                    <button onclick="openCreateCustomCharacterPopup()" class="createCustomCardButton">Create Character</button>
+                    <button onclick="openCreateCustomCardPopup()" class="createCustomCardButton">Create Custom Card</button>
                 </div>
                 <div>
                     <h1 style="margin: 4px 0px;">About</h1>
-                    <p style="margin: 4px 0px; font: 1em 'Roboto', sans-serif;">This is a fan-made website for the Marvel Snap card game. It is a place where you can find and share custom cards for the game. If you want to create and upload a card, first create the design of the card and then create the card itself. </p>
+                    <p style="margin: 4px 0px; font: 1em 'Roboto', sans-serif;">This is a fan-made website for the Marvel Snap card game. It is a place where you can find and share custom cards for the game. If you want to create and upload a card, first create the Character (the Design) of the card and then create the card itself. </p>
                 </div>
             </div>
         </div>
