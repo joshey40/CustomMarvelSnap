@@ -22,6 +22,13 @@
     }
 }
 
+@media (max-width: 600px) {
+    .popup {
+        width: 90%;
+        height: 90%;
+    }
+}
+
 .popupTitle {
     text-align: left;
     font-size: 2em;
