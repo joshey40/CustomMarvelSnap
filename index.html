@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link href="/css/main.css" rel="stylesheet">
+</head>
+<body>
+    <img src="/res/img/background.png" class="background-img" alt="background">
+    <div style="position: absolute; height: 100vh; margin-right: 0px; ">
+        <div class="title-div">
+            <h1>Custom Marvel Snap</h1>
+        </div>
+        <div style="display: flex; justify-content: space-between; flex-wrap: wrap;">
+            <div class="filter-div">
+                <h1 style="margin: 4px 0px;">Filters</h1>
+                <input type="text" id="search" name="search" placeholder="Search" class="text-input" onchange="changeSearch()">
+                <button onclick="clearFilters()" class="button">Clear</button>
+                <select name="cardTypeSelect" id="cardTypeSelect" class="select" onchange="changeCardType()">
+                    <option value="All">All</option>
+                    <option value="Token">Token only</option>
+                    <option value="Card">Cards only</option>
+                </select>
+                <select name="sourceSelect" id="sourceSelect" class="select" onchange="changeSource()">
+                    <option value="All">All</option>
+                    <option value="official">Official</option>
+                    <option value="custom">Custom</option>
+                </select>
+                <br>
+                <select name="effect-tag" id="effect-tag" class="select">
+                    <option value="none">None</option>
+                </select>
+                <button onclick="addTagFilter()" class="button">Add</button>
+                <div style="display: inline-block;" id="effect-tags"></div>
+                <br>
+                <select name="character-tag" id="character-tag" class="select">
+                    <option value="none">None</option>
+                </select>
+                <button onclick="addCharacterFilter()" class="button">Add</button>
+                <div style="display: inline-block;" id="character-tags"></div>
+                <br>
+                <select name="order" id="order" class="select" onchange="changeOrder()">
+                    <option value="Name">Name</option>
+                    <option value="Cost">Cost</option>
+                    <option value="Power">Power</option>
+                </select>
+                <button onclick="ascendOrder()" class="button" style="width:33px;">&#8593;</button>
+                <button onclick="descendOrder()" class="button" style="width:33px;">&#8595;</button>
+            </div>
+            <div class="extras-div">
+                <div>
+                    <h1 style="margin: 4px 0px;">Custom</h1>
+                    <button onclick="openCreateCustomVariantPopup()" class="createCustomCardButton">Create a Custom Design</button>
+                    <button onclick="openCreateCustomCardPopup()" class="createCustomCardButton">Create a Custom Card</button>
+                </div>
+                <div>
+                    <h1 style="margin: 4px 0px;">About</h1>
+                    <p style="margin: 4px 0px; font: 1em 'Roboto', sans-serif;">This is a fan-made website for the Marvel Snap card game. It is a place where you can find and share custom cards for the game. If you want to create and upload a card, first create the design of the card and then create the card itself. </p>
+                </div>
+            </div>
+        </div>
+        <div id="cards-div" class="cards-div"> </div>
+        <div id="legals-div" style="display: flex; flex-wrap: wrap; justify-content: center; align-items: center; margin: 10px; background-color: rgba(0, 0, 0, 0.75); color: white; font: 1em 'Roboto', sans-serif; ">
+            <p style="text-align: center; padding: 5px; margin-left: 10%; margin-right: 10%;">All rights reserved. All art and/or graphic content is property of their respective artists and/or owners. This website is not produced, endorsed, supported, or affiliated with MARVEL, Nuverse and Second Dinner. Text and Images are user-submitted and do not represent official endorsements of this site.</p>
+        </div>
+        <div class="popup" id="popup">
+            <span class="popupClose" onclick="closePopup()">&times;</span>
+            <h1 class="popupTitle" id="popupTitle">Card Name</h1>
+            <div class="popupContent" id="popupContent">
+                <div class="popupImgDiv" id="popupImgDiv"> </div>
+                <div class="popupDescriptionDiv" id="popupDescriptionDiv">
+                    <h2>Type</h2>
+                    <p id="popupDesc-cardtype">Cardtype</p>
+                    <h2>Text</h2>
+                    <p id="popupDesc-text">Text</p>
+                    <h2>Stats</h2>
+                    <p id="popupDesc-cost&power">Cost/Power</p>
+                    <h2>Effect Tags</h2>
+                    <div id="popupDesc-effecttags"></div>
+                    <h2>Character Tags</h2>
+                    <div id="popupDesc-charactertags"></div>
+                    <h2>Source/Author</h2>
+                    <button id="popupDesc-source" class="popupSourceBtn">Source</button>
+                </div>
+                
+            </div>
+        </div>
+        
+        <div class="loading" id="loading">
+            <img src="/res/img/loading.gif" alt="loading">
+        </div>
+    </div>
+    <script src="/js/main.js"></script>
+</body>
+</html>
