@@ -10,6 +10,7 @@ req.onreadystatechange = function() {
         customCards = data.customCards;
         addAllEffectTags();
         addAllCharacterTags();
+        addAllCustomCharacters();
         applyFilters();
     }
 };
@@ -62,6 +63,29 @@ function addAllCharacterTags() {
         option.textContent = characterTags[i];
         characterTagsSelect.appendChild(option);
     }
+}
+
+// Custom Characters List
+
+var customCharacters = [];
+
+function addAllCustomCharacters() {
+    for (var key in customCards) {
+        var card;
+        card.name = customCards[key].name;
+        card.id = customCards[key].id;
+        customCharacters.push(card);
+    }
+    var exampleCard = {
+        name: "Example Character",
+        id: "example_character"
+    };
+    var exampleCard2 = {
+        name: "Test Character",
+        id: "test_character"
+    };
+    customCharacters.push(exampleCard);
+    customCharacters.push(exampleCard2);
 }
 
 // Filtersystem
@@ -237,6 +261,8 @@ async function displayCard(card, characterListDiv) {
             await new Promise(resolve => setTimeout(resolve, 100));
         }
         document.getElementById("loading").style.visibility = "hidden";
+        closeCreateCardPopup();
+        closeCreateCharacterPopup();
         document.getElementById("popup").style.visibility = "visible";
         var card = JSON.parse(this.getAttribute("data-character"));
         document.getElementById("popupTitle").textContent = card.name;
@@ -422,21 +448,223 @@ function closePopup() {
     document.getElementById("popup").style.visibility = "hidden";
 }
 
-function closeCreateCustomCardPopup() {
-    // TODO
+function closeCreateCardPopup() {
+    document.getElementById("popupCreateCard").style.visibility = "hidden";
+    var createCharacterDiv = document.getElementById("popupCreateCardCharacterOrVariant");
+    createCharacterDiv.style.visibility = "hidden";
+    var createCharacterPropertiesDiv = document.getElementById("popupCreateCardProperties");
+    createCharacterPropertiesDiv.style.visibility = "hidden";
 }
 
-function openCreateCustomCardPopup() {
-    // TODO
+function openCreateCardPopup() {
+    closeCreateCharacterPopup();
+    closePopup();
+    document.getElementById("popupCreateCard").style.visibility = "visible";
+    // Card Name Options
+    const datalist = document.getElementById("characterNamesForCard");
+    datalist.innerHTML = "";
+    for (var i = 0; i < customCharacters.length; i++) {
+        var option = document.createElement("option");
+        option.value = customCharacters[i].name;
+        datalist.appendChild(option);
+    }
+    // Effect Tags
+    var effectTagsSelect = document.getElementById("popupCreateCardEffectTag");
+    effectTagsSelect.innerHTML = "";
+    for (var i = 0; i < effectTags.length; i++) {
+        var option = document.createElement("option");
+        option.value = effectTags[i];
+        option.textContent = effectTags[i];
+        effectTagsSelect.appendChild(option);
+    }
+    // Reset Custom Card
+    customCard = {
+        name: "",
+        id: "",
+        cardtype: "Card",
+        cost: 0,
+        power: 0,
+        text: "",
+        effectTags: [],
+        cardSource: "",
+    };
+    // Name
+    document.getElementById("popupCreateCardName").value = customCard.name;
+    document.getElementById("popupCreateCardType").value = customCard.cardtype;
+    document.getElementById("popupCreateCardCost").value = customCard.cost;
+    document.getElementById("popupCreateCardPower").value = customCard.power;
 }
 
-function closeCreateCustomCharacterPopup() {
-    // TODO
+function closeCreateCharacterPopup() {
+    document.getElementById("popupCreateCharacter").style.visibility = "hidden";
 }
 
-function openCreateCustomCharacterPopup() {
-    // TODO
+function openCreateCharacterPopup() {
+    closeCreateCardPopup();
+    closePopup();
+    document.getElementById("popupCreateCharacter").style.visibility = "visible";
+    // Card Name Options
+    const datalist = document.getElementById("characterNamesForCharacter");
+    datalist.innerHTML = "";
+    for (var i = 0; i < customCharacters.length; i++) {
+        var option = document.createElement("option");
+        option.value = customCharacters[i].name;
+        datalist.appendChild(option);
+    }
+    // Character Tags
+    var characterTagsSelect = document.getElementById("popupCreateCharacterCharacterTag");
+    characterTagsSelect.innerHTML = "";
+    for (var i = 0; i < characterTags.length; i++) {
+        var option = document.createElement("option");
+        option.value = characterTags[i];
+        option.textContent = characterTags[i];
+        characterTagsSelect.appendChild(option);
+    }
+    // Reset Custom Character
+    customCharcater = {
+        name: "",
+        id: "",
+        characterTags: [],
+    };
+    // Name
+    customCharcater.name = customCard.name;
+    customCharcater.id = customCard.id;
+    document.getElementById("popupCreateCharacterName").value = customCharcater.name;
+}
+
+// Create Custom Character
+
+var customCharcater = {
+    name: "",
+    id: "",
+    characterTags: [],
+};
+
+function changeCreateCharacterName() {
+    customCharcater.name = document.getElementById("popupCreateCharacterName").value;
+    customCharcater.id = customCharcater.name.toLowerCase().replace(" ", "_");
+
+    applyCreateCharacter();
+}
+
+function addCreateCharacterCharacterTag() {
+    var tag = document.getElementById("popupCreateCharacterCharacterTag").value;
+    var tagDiv = document.createElement("div");
+    tagDiv.textContent = tag;
+    tagDiv.classList.add("tagsDiv");
+
+    if (customCharcater.characterTags.indexOf(tag) == -1) {
+        customCharcater.characterTags.push(tag);
+        var deleteButton = document.createElement("button");
+        deleteButton.textContent = "X";
+        deleteButton.classList.add("tagsDivDelete");
+        deleteButton.onclick = function() {
+            tagDiv.remove();
+            customCharcater.characterTags.splice(customCharcater.characterTags.indexOf(tag), 1);
+            applyCreateCharacter();
+        };
+        tagDiv.appendChild(deleteButton);
+    
+        document.getElementById("popupCreateCharacterCharacterTags").appendChild(tagDiv);
+
+        applyCreateCharacter();
+    }
+}
+
+function applyCreateCharacter() {
+    // TODO: Add character preview
+    console.log(customCharcater);
 }
 
 // Create Custom Card
 
+var customCard = {
+    name: "",
+    id: "",
+    cardtype: "Card",
+    cost: 0,
+    power: 0,
+    text: "",
+    effectTags: [],
+    cardSource: "",
+};
+
+function changeCreateCardName() {
+    customCard.name = document.getElementById("popupCreateCardName").value;
+    customCard.id = customCard.name.toLowerCase().replace(" ", "_");
+    // Check if character exists
+    if (customCard.name != "") {
+        var createCharacterDiv = document.getElementById("popupCreateCardCharacterOrVariant");
+        createCharacterDiv.style.visibility = "visible";
+        if (customCharacters.find(character => character.name == customCard.name) != null) {
+            var createCharacterDivText = document.getElementById("popupCreateCardCharacterOrVariantText");
+            createCharacterDivText.textContent = "This character exists. If you want to create a variant for it, click the button below. (Optional)";
+            var createCharacterButton = document.getElementById("popupCreateCardCharacterOrVariantButton");
+            createCharacterButton.textContent = "Create Variant";
+            var createCharacterPropertiesDiv = document.getElementById("popupCreateCardProperties");
+            createCharacterPropertiesDiv.style.visibility = "visible";
+        } else {
+            var createCharacterDivText = document.getElementById("popupCreateCardCharacterOrVariantText");
+            createCharacterDivText.textContent = "This character doesn't exist yet. If you want to create it, click the button below.";
+            var createCharacterButton = document.getElementById("popupCreateCardCharacterOrVariantButton");
+            createCharacterButton.textContent = "Create Character";
+            var createCharacterPropertiesDiv = document.getElementById("popupCreateCardProperties");
+            createCharacterPropertiesDiv.style.visibility = "hidden";
+        }
+    } else {
+        var createCharacterDiv = document.getElementById("popupCreateCardCharacterOrVariant");
+        createCharacterDiv.style.visibility = "hidden";
+        var createCharacterPropertiesDiv = document.getElementById("popupCreateCardProperties");
+        createCharacterPropertiesDiv.style.visibility = "hidden";
+    }
+    // Apply
+    applyCreateCard();
+}
+
+function changeCreateCardCardType() {
+    customCard.cardtype = document.getElementById("popupCreateCardType").value;
+    applyCreateCard();
+}
+
+function changeCreateCardCost() {
+    customCard.cost = document.getElementById("popupCreateCardCost").value;
+    applyCreateCard();
+}
+
+function changeCreateCardPower() {
+    customCard.power = document.getElementById("popupCreateCardPower").value;
+    applyCreateCard();
+}
+
+function changeCreateCardText() {
+    customCard.text = document.getElementById("popupCreateCardText").value;
+    applyCreateCard();
+}
+
+function addCreateCardEffectTag() {
+    var tag = document.getElementById("popupCreateCardEffectTag").value;
+    var tagDiv = document.createElement("div");
+    tagDiv.textContent = tag;
+    tagDiv.classList.add("tagsDiv");
+
+    if (customCard.effectTags.indexOf(tag) == -1) {
+        customCard.effectTags.push(tag);
+        var deleteButton = document.createElement("button");
+        deleteButton.textContent = "X";
+        deleteButton.classList.add("tagsDivDelete");
+        deleteButton.onclick = function() {
+            tagDiv.remove();
+            customCard.effectTags.splice(customCard.effectTags.indexOf(tag), 1);
+            applyCreateCard();
+        };
+        tagDiv.appendChild(deleteButton);
+    
+        document.getElementById("popupCreateCardEffectTags").appendChild(tagDiv);
+
+        applyCreateCard();
+    }
+}
+
+function applyCreateCard() {
+    console.log(customCard);
+}

@@ -54,12 +54,11 @@
             <div class="extras-div">
                 <div>
                     <h1 style="margin: 4px 0px;">Custom</h1>
-                    <button onclick="openCreateCustomCharacterPopup()" class="createCustomCardButton">Create Character</button>
-                    <button onclick="openCreateCustomCardPopup()" class="createCustomCardButton">Create Custom Card</button>
+                    <button onclick="openCreateCardPopup()" class="createCustomCardButton">Create Custom Card</button>
                 </div>
                 <div>
                     <h1 style="margin: 4px 0px;">About</h1>
-                    <p style="margin: 4px 0px; font: 1em 'Roboto', sans-serif;">This is a fan-made website for the Marvel Snap card game. It is a place where you can find and share custom cards for the game. If you want to create and upload a card, first create the Character (the Design) of the card and then create the card itself. </p>
+                    <p style="margin: 4px 0px; font: 1em 'Roboto', sans-serif;">This is a fan-made website for the Marvel Snap card game. It is a place where you can find and share custom cards for the game.</p>
                 </div>
             </div>
         </div>
@@ -67,6 +66,7 @@
         <div id="legals-div" style="display: flex; flex-wrap: wrap; justify-content: center; align-items: center; margin: 10px; background-color: rgba(0, 0, 0, 0.75); color: white; font: 1em 'Roboto', sans-serif; ">
             <p style="text-align: center; padding: 5px; margin-left: 10%; margin-right: 10%;">All rights reserved. All art and/or graphic content is property of their respective artists and/or owners. This website is not produced, endorsed, supported, or affiliated with MARVEL, Nuverse and Second Dinner. Text and Images are user-submitted and do not represent official endorsements of this site.</p>
         </div>
+
         <div class="popup" id="popup">
             <span class="popupClose" onclick="closePopup()">&times;</span>
             <h1 class="popupTitle" id="popupTitle">Card Name</h1>
@@ -90,6 +90,69 @@
             </div>
         </div>
         
+        <div class="popup" id="popupCreateCard">
+            <span class="popupClose" onclick="closeCreateCardPopup()">&times;</span>
+            <h1 class="popupTitle" id="popupCreateCardTitle">Create Card</h1>
+            <div class="popupContent" id="popupCreateCardContent">
+                <div class="popupImgDiv" id="popupCreateCardImgDiv"> </div>
+                <div class="popupDescriptionDiv" id="popupCreateCardDescriptionDiv">
+                    <h2>Name</h2>
+                    <input type="text" id="popupCreateCardName" class="text-input" list="characterNamesForCard" onchange="changeCreateCardName()">
+                    <datalist id="characterNamesForCard"></datalist>
+                    <div id="popupCreateCardCharacterOrVariant" style="visibility: hidden;">
+                        <p id="popupCreateCardCharacterOrVariantText">--</p>
+                        <button onclick="openCreateCharacterPopup()" class="createCustomCardButton" id="popupCreateCardCharacterOrVariantButton">Create Character/Variant</button>
+                    </div>
+                    <div id="popupCreateCardProperties" style="visibility: hidden;">
+                        <h2>Card Type</h2>
+                        <select name="cardType" id="popupCreateCardType" class="select" onchange="changeCreateCardCardType()">
+                            <option value="Card">Card</option>
+                            <option value="Token">Token</option>
+                        </select>
+                        <h2>Text</h2>
+                        <textarea id="popupCreateCardText" class="text-area" onchange="changeCreateCardText()"></textarea>
+                        <h2>Stats</h2>
+                        <input type="number" id="popupCreateCardCost" class="number-input" min="0" max="10" onchange="changeCreateCardCost()">
+                        <input type="number" id="popupCreateCardPower" class="number-input" min="0" max="10" onchange="changeCreateCardPower()">
+                        <h2>Effect Tags</h2>
+                        <select name="effect-tag" id="popupCreateCardEffectTag" class="select">
+                            <option value="none">None</option>
+                        </select>
+                        <button onclick="addCreateCardEffectTag()" class="button">Add</button>
+                        <div style="display: inline-block;" id="popupCreateCardEffectTags"></div>
+                        <h2>Source/Author</h2>
+                        <input type="text" id="popupCreateCardSource" class="text-input" onchange="changeCreateCardSource()">
+                </div>
+            </div>
+        </div>
+
+        <div class="popup" id="popupCreateCharacter">
+            <span class="popupClose" onclick="closeCreateCharacterPopup()">&times;</span>
+            <h1 class="popupTitle" id="popupCreateCharacterTitle">Create Charcater/Variant</h1>
+            <div class="popupContent" id="popupCreateCharacterContent">
+                <div class="popupImgDiv" id="popupCreateCharacterImgDiv"> </div>
+                <div class="popupDescriptionDiv" id="popupCreateCharacterDescriptionDiv">
+                    <h2>Name</h2>
+                    <input type="text" id="popupCreateCharacterName" class="text-input" list="characterNamesForCharacter" onchange="changeCreateCharacterName()">
+                    <datalist id="characterNamesForCharacter"></datalist>
+                    <h2>Image</h2>
+                    <label for="popupCreateCharacterBackgroundImage" class="imageInput-label">Background (Optional):</label>
+                    <input type="file" id="popupCreateCharacterBackgroundImage" class="image-input" onchange="changeCreateCharacterBackgroundImage()" accept="image/*">
+                    <label for="popupCreateCharacterForegroundImage" class="imageInput-label">Foreground (Optional):</label>
+                    <input type="file" id="popupCreateCharacterForegroundImage" class="image-input" onchange="changeCreateCharacterForegroundImage()" accept="image/*">
+                    <label for="popupCreateCharacterLogoImage" class="imageInput-label">Logo (Optional):</label>
+                    <input type="file" id="popupCreateCharacterLogoImage" class="image-input" onchange="changeCreateCharacterLogoImage()" accept="image/*">
+                    <h2>Character Tags</h2>
+                    <select name="character-tag" id="popupCreateCharacterCharacterTag" class="select">
+                        <option value="none">None</option>
+                    </select>
+                    <button onclick="addCreateCharacterCharacterTag()" class="button">Add</button>
+                    <br>
+                    <div style="display: inline-block;" id="popupCreateCharacterCharacterTags"></div>
+                    
+            </div>
+        </div>
+
         <div class="loading" id="loading">
             <img src="/res/img/loading.gif" alt="loading">
         </div>

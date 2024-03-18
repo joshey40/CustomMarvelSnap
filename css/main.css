@@ -73,6 +73,19 @@ h2 {
     font: 1em 'Roboto', sans-serif;
 }
 
+.text-area {
+    width: 300px;
+    height: 75px;
+    padding: 5px 10px;
+    margin: 4px 0;
+    display: inline-block;
+    border: 3px solid #10072b;
+    border-radius: 4px;
+    box-sizing: border-box;
+    font: 1em 'Roboto', sans-serif;
+    resize: none;
+}
+
 .select {
     width: 150px;
     padding: 5px 10px;
@@ -250,4 +263,13 @@ h2 {
     width: 100px;
     height: 100px;
     margin: 10px;
+}
+
+.imageInput-label {
+    color: white;
+    font: 1em 'Roboto', sans-serif;
+    text-shadow: none;
+    width: 170px;
+    padding: 5px 5px;
+    display: inline-block;
 }
