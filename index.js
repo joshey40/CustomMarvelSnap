@@ -9,11 +9,6 @@ webApp.use('/js', express.static(__dirname + '/js'));
 webApp.use('/css', express.static(__dirname + '/css'));
 webApp.use('/res', express.static(__dirname + '/res'));
 
-webApp.use((req, res, next) => {
-    res.header('Access-Control-Allow-Origin', '*');
-    next();
-  });
-
 webApp.get('/', (req, res) => {
     res.sendFile(join(__dirname, 'index.html'));
 });
@@ -28,10 +23,9 @@ fetch(CARDS_API_URL)
     })
     .catch(error => console.log(error));
 
-    fetch(LOCATIONS_API_URL)
+fetch(LOCATIONS_API_URL)
     .then(response => response.json())
     .then(data => {
-        console.log(data.success);
         var locations = data.success.locations;
     })
     .catch(error => console.log(error));
