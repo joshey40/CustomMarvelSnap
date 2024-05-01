@@ -9,6 +9,11 @@ webApp.use('/js', express.static(__dirname + '/js'));
 webApp.use('/css', express.static(__dirname + '/css'));
 webApp.use('/res', express.static(__dirname + '/res'));
 
+webApp.use((req, res, next) => {
+    res.header('Access-Control-Allow-Origin', '*');
+    next();
+});
+
 webApp.get('/', (req, res) => {
     res.sendFile(join(__dirname, 'index.html'));
 });
