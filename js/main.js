@@ -1,13 +1,4 @@
-const CARDS_API_URL = "https://marvelsnapzone.com/getinfo/?searchtype=cards&searchcardstype=true"
-const LOCATIONS_API_URL = "https://marvelsnapzone.com/getinfo/?searchtype=locations&searchcardstype=true"
 
-fetch(CARDS_API_URL)
-    .then(response => response.json())
-    .then(data => {
-        console.log(data);
-        // process the data here
-    })
-    .catch(error => console.log(error));
 
 var officialCards;
 var customCards;
