@@ -21,8 +21,10 @@ webApp.get('/', (req, res) => {
 });
 
 var req = new XMLHttpRequest();
+console.log("Requesting cards from API...");
 req.onreadystatechange = function() {
     if (req.readyState == 4 && req.status == 200) {
+        console.log("Cards received from API");
         console.log(req.responseText);
         var data = JSON.parse(req.responseText);
         officialCards = data.officialCards;
