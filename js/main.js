@@ -1,15 +1,16 @@
 const CARDS_API_URL = "https://marvelsnapzone.com/getinfo/?searchtype=cards&searchcardstype=true"
 const LOCATIONS_API_URL = "https://marvelsnapzone.com/getinfo/?searchtype=locations&searchcardstype=true"
 
-var officialCards;
-var customCards;
-
 const http = new XMLHttpRequest()
 
 http.open("GET", CARDS_API_URL)
+http.setRequestHeader("Access-Control-Allow-Origin", "*");
 http.send()
 
 http.onload = () => console.log(http.responseText)
+
+var officialCards;
+var customCards;
 
 // effectTags
 
