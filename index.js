@@ -26,9 +26,12 @@ fetch(CARDS_API_URL)
     .then(data => {
         console.log(data);
         // process the data here
+        data.success.cards.forEach(card => {
+            console.log(card);
+        });
     })
     .catch(error => console.log(error));
-    
+
 // Done
 webApp.listen(process.env.PORT || port, () => {
     console.log(`Server is running at http://localhost:${port} or https://custom-marvel-snap.cyclic.app`);
