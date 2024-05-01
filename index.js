@@ -21,15 +21,18 @@ webApp.get('/', (req, res) => {
 const CARDS_API_URL = "https://marvelsnapzone.com/getinfo/?searchtype=cards&searchcardstype=true"
 const LOCATIONS_API_URL = "https://marvelsnapzone.com/getinfo/?searchtype=locations&searchcardstype=true"
 
-console.log("Fetching data from API...");
 fetch(CARDS_API_URL)
     .then(response => response.json())
     .then(data => {
-        console.log(data);
-        // process the data here
-        data.success.cards.forEach(card => {
-            console.log(card);
-        });
+        var cards = data.success.cards;
+    })
+    .catch(error => console.log(error));
+
+    fetch(LOCATIONS_API_URL)
+    .then(response => response.json())
+    .then(data => {
+        console.log(data.success);
+        var locations = data.success.locations;
     })
     .catch(error => console.log(error));
 
