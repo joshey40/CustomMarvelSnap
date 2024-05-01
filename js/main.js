@@ -5,7 +5,6 @@ var officialCards;
 var customCards;
 
 var req = new XMLHttpRequest();
-req.open('GET', CARDS_API_URL, true);
 req.onreadystatechange = function() {
     if (req.readyState == 4 && req.status == 200) {
         console.log(req.responseText);
@@ -17,7 +16,8 @@ req.onreadystatechange = function() {
         applyFilters();
     }
 };
-req.send();
+req.open('GET', CARDS_API_URL, true);
+req.send(null);
 
 // effectTags
 
