@@ -1,25 +1,27 @@
+const CARDS_API_URL = "https://marvelsnapzone.com/getinfo/?searchtype=cards&searchcardstype=true"
+const LOCATIONS_API_URL = "https://marvelsnapzone.com/getinfo/?searchtype=locations&searchcardstype=true"
+
 var officialCards;
 var customCards;
 
 var req = new XMLHttpRequest();
-req.open('GET', '/cards', true);
+req.open('GET', CARDS_API_URL, true);
 req.onreadystatechange = function() {
     if (req.readyState == 4 && req.status == 200) {
+        console.log(req.responseText);
         var data = JSON.parse(req.responseText);
         officialCards = data.officialCards;
         customCards = data.customCards;
         addAllEffectTags();
-        addAllCharacterTags();
         addAllCustomCharacters();
         applyFilters();
     }
 };
 req.send();
 
-// effectTags and characterTags
+// effectTags
 
 var effectTags = [];
-var characterTags = [];
 
 function addAllEffectTags() {
     for (var key in officialCards) {
@@ -40,28 +42,6 @@ function addAllEffectTags() {
         option.value = effectTags[i];
         option.textContent = effectTags[i];
         effectTagsSelect.appendChild(option);
-    }
-}
-
-function addAllCharacterTags() {
-    for (var key in officialCards) {
-        var card = officialCards[key];
-        if (card.characterTags != null) {
-            for (var i = 0; i < card.characterTags.length; i++) {
-                if (!characterTags.includes(card.characterTags[i])) {
-                    characterTags.push(card.characterTags[i]);
-                }
-            }
-        }
-    }
-    characterTags.sort();
-    var characterTagsSelect = document.getElementById("character-tag");
-    characterTagsSelect.innerHTML = "";
-    for (var i = 0; i < characterTags.length; i++) {
-        var option = document.createElement("option");
-        option.value = characterTags[i];
-        option.textContent = characterTags[i];
-        characterTagsSelect.appendChild(option);
     }
 }
 
@@ -95,7 +75,6 @@ var filters = {
     cardtype: "All",
     sources: "All",
     effectTags: [],
-    characterTags: [],
     order: "Name",
     orderAscend: false
 };
@@ -132,7 +111,6 @@ function clearFilters() {
         cardtype: "All",
         sources: "All",
         effectTags: [],
-        characterTags: [],
         order: "Name",
         orderAscend: false
     };
@@ -182,30 +160,6 @@ function addEffectTagFilter() {
     }
 }
 
-function addCharacterTagFilter() {
-    var tag = document.getElementById("character-tag").value;
-    var tagDiv = document.createElement("div");
-    tagDiv.textContent = tag;
-    tagDiv.classList.add("tagsDiv");
-
-    if (filters.characterTags.indexOf(tag) == -1) {
-        filters.characterTags.push(tag);
-        var deleteButton = document.createElement("button");
-        deleteButton.textContent = "X";
-        deleteButton.classList.add("tagsDivDelete");
-        deleteButton.onclick = function() {
-            tagDiv.remove();
-            filters.characterTags.splice(filters.characterTags.indexOf(tag), 1);
-            applyFilters();
-        };
-        tagDiv.appendChild(deleteButton);
-    
-        document.getElementById("character-tags").appendChild(tagDiv);
-
-        applyFilters();
-    }
-}
-
 async function applyFilters() {
     if (filterRunning) {
         return;
@@ -224,8 +178,7 @@ async function applyFilters() {
         || card.text.toLowerCase().includes(filters.search.toLowerCase()))
         && (filters.cardtype == "All" || card.cardtype == filters.cardtype)
         && (filters.sources == "All" || (filters.sources == "custom" && card.custom) || (filters.sources == "official" && !card.custom))
-        && (filters.effectTags.length == 0 || (card.effectTags && filters.effectTags.every(tag => card.effectTags.includes(tag))))
-        && (filters.characterTags.length == 0 || (card.characterTags && filters.characterTags.every(tag => card.characterTags.includes(tag))));
+        && (filters.effectTags.length == 0 || (card.effectTags && filters.effectTags.every(tag => card.effectTags.includes(tag))));
     });
 
     if (filters.order == "Name") {
@@ -299,20 +252,6 @@ async function displayCard(card, characterListDiv) {
             tag.textContent = "None";
             tag.classList.add("tagsDiv");
             document.getElementById("popupDesc-effecttags").appendChild(tag);
-        }
-        document.getElementById("popupDesc-charactertags").innerHTML = "";
-        if (card.characterTags != null && card.characterTags.length > 0) {
-            for (var j = 0; j < card.characterTags.length; j++) {
-                var tag = document.createElement("div");
-                tag.textContent = card.characterTags[j];
-                tag.classList.add("tagsDiv");
-                document.getElementById("popupDesc-charactertags").appendChild(tag);
-            }
-        } else {
-            var tag = document.createElement("div");
-            tag.textContent = "None";
-            tag.classList.add("tagsDiv");
-            document.getElementById("popupDesc-charactertags").appendChild(tag);
         }
         if (card.custom) {
             document.getElementById("popupDesc-source").textContent = "Custom";
@@ -511,20 +450,10 @@ function openCreateCharacterPopup() {
         option.value = customCharacters[i].name;
         datalist.appendChild(option);
     }
-    // Character Tags
-    var characterTagsSelect = document.getElementById("popupCreateCharacterCharacterTag");
-    characterTagsSelect.innerHTML = "";
-    for (var i = 0; i < characterTags.length; i++) {
-        var option = document.createElement("option");
-        option.value = characterTags[i];
-        option.textContent = characterTags[i];
-        characterTagsSelect.appendChild(option);
-    }
     // Reset Custom Character
     customCharcater = {
         name: "",
         id: "",
-        characterTags: [],
     };
     // Name
     customCharcater.name = customCard.name;
@@ -537,7 +466,6 @@ function openCreateCharacterPopup() {
 var customCharcater = {
     name: "",
     id: "",
-    characterTags: [],
 };
 
 function changeCreateCharacterName() {
@@ -545,30 +473,6 @@ function changeCreateCharacterName() {
     customCharcater.id = customCharcater.name.toLowerCase().replace(" ", "_");
 
     applyCreateCharacter();
-}
-
-function addCreateCharacterCharacterTag() {
-    var tag = document.getElementById("popupCreateCharacterCharacterTag").value;
-    var tagDiv = document.createElement("div");
-    tagDiv.textContent = tag;
-    tagDiv.classList.add("tagsDiv");
-
-    if (customCharcater.characterTags.indexOf(tag) == -1) {
-        customCharcater.characterTags.push(tag);
-        var deleteButton = document.createElement("button");
-        deleteButton.textContent = "X";
-        deleteButton.classList.add("tagsDivDelete");
-        deleteButton.onclick = function() {
-            tagDiv.remove();
-            customCharcater.characterTags.splice(customCharcater.characterTags.indexOf(tag), 1);
-            applyCreateCharacter();
-        };
-        tagDiv.appendChild(deleteButton);
-    
-        document.getElementById("popupCreateCharacterCharacterTags").appendChild(tagDiv);
-
-        applyCreateCharacter();
-    }
 }
 
 function applyCreateCharacter() {

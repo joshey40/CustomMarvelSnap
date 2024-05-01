@@ -37,12 +37,6 @@
                 <button onclick="addEffectTagFilter()" class="button">Add</button>
                 <div style="display: inline-block;" id="effect-tags"></div>
                 <br>
-                <select name="character-tag" id="character-tag" class="select">
-                    <option value="none">None</option>
-                </select>
-                <button onclick="addCharacterTagFilter()" class="button">Add</button>
-                <div style="display: inline-block;" id="character-tags"></div>
-                <br>
                 <select name="order" id="order" class="select" onchange="changeOrder()">
                     <option value="Name">Name</option>
                     <option value="Cost">Cost</option>
@@ -81,8 +75,6 @@
                     <p id="popupDesc-cost&power">Cost/Power</p>
                     <h2>Effect Tags</h2>
                     <div id="popupDesc-effecttags"></div>
-                    <h2>Character Tags</h2>
-                    <div id="popupDesc-charactertags"></div>
                     <h2>Source/Author</h2>
                     <button id="popupDesc-source" class="popupSourceBtn">Source</button>
                 </div>
@@ -141,15 +133,7 @@
                     <label for="popupCreateCharacterForegroundImage" class="imageInput-label">Foreground (Optional):</label>
                     <input type="file" id="popupCreateCharacterForegroundImage" class="image-input" onchange="changeCreateCharacterForegroundImage()" accept="image/*">
                     <label for="popupCreateCharacterLogoImage" class="imageInput-label">Logo (Optional):</label>
-                    <input type="file" id="popupCreateCharacterLogoImage" class="image-input" onchange="changeCreateCharacterLogoImage()" accept="image/*">
-                    <h2>Character Tags</h2>
-                    <select name="character-tag" id="popupCreateCharacterCharacterTag" class="select">
-                        <option value="none">None</option>
-                    </select>
-                    <button onclick="addCreateCharacterCharacterTag()" class="button">Add</button>
-                    <br>
-                    <div style="display: inline-block;" id="popupCreateCharacterCharacterTags"></div>
-                    
+                    <input type="file" id="popupCreateCharacterLogoImage" class="image-input" onchange="changeCreateCharacterLogoImage()" accept="image/*">     
             </div>
         </div>
 

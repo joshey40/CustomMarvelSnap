@@ -1,26 +1,3 @@
-const { initializeApp } = require('firebase/app');
-const { getDatabase, ref, set, onValue } = require('firebase/database');
-
-const firebaseConfig = {
-    apiKey: "AIzaSyApRPDgwka94D6l6B8ifZMx7P1vU1XiP3c",
-    authDomain: "custommarvelsnap-c7f43.firebaseapp.com",
-    databaseURL: "https://custommarvelsnap-c7f43-default-rtdb.firebaseio.com",
-    projectId: "custommarvelsnap-c7f43",
-    storageBucket: "custommarvelsnap-c7f43.appspot.com",
-    messagingSenderId: "920972348179",
-    appId: "1:920972348179:web:60f2c648aab261df2428e6",
-    measurementId: "G-CTSJ3Z1M3Y"
-  };
-
-const app = initializeApp(firebaseConfig);
-const db = getDatabase(app);
-
-// Add Custom Card
-const customCardRef = ref(db, 'cards/customCards');
-function addCustomCard(card) {
-    set(customCardRef, card);
-}
-
 // Web Server (index.html, main.js, style.css)
 const express = require('express');
 const { join } = require('path');
