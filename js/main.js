@@ -4,20 +4,12 @@ const LOCATIONS_API_URL = "https://marvelsnapzone.com/getinfo/?searchtype=locati
 var officialCards;
 var customCards;
 
-var req = new XMLHttpRequest();
-req.onreadystatechange = function() {
-    if (req.readyState == 4 && req.status == 200) {
-        console.log(req.responseText);
-        var data = JSON.parse(req.responseText);
-        officialCards = data.officialCards;
-        customCards = data.customCards;
-        addAllEffectTags();
-        addAllCustomCharacters();
-        applyFilters();
-    }
-};
-req.open('GET', CARDS_API_URL, true);
-req.send(null);
+const http = new XMLHttpRequest()
+
+http.open("GET", CARDS_API_URL)
+http.send()
+
+http.onload = () => console.log(http.responseText)
 
 // effectTags
 
