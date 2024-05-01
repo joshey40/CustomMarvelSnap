@@ -13,17 +13,6 @@ webApp.get('/', (req, res) => {
     res.sendFile(join(__dirname, 'index.html'));
 });
 
-// Read and send Data
-const cardsRef = ref(db, 'cards');
-
-onValue(cardsRef, (snapshot) => {
-    const data = snapshot.val();
-    webApp.get('/cards', (req, res) => {
-        var JSONdata = JSON.stringify(data);
-        res.send(JSONdata);
-    });
-});
-
 // Done
 webApp.listen(process.env.PORT || port, () => {
     console.log(`Server is running at http://localhost:${port} or https://custom-marvel-snap.cyclic.app`);
