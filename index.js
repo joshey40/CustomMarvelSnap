@@ -21,6 +21,7 @@ webApp.get('/', (req, res) => {
 const CARDS_API_URL = "https://marvelsnapzone.com/getinfo/?searchtype=cards&searchcardstype=true"
 const LOCATIONS_API_URL = "https://marvelsnapzone.com/getinfo/?searchtype=locations&searchcardstype=true"
 
+console.log("Fetching data from API...");
 fetch(CARDS_API_URL)
     .then(response => response.json())
     .then(data => {
