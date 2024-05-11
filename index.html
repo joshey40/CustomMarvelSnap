@@ -31,11 +31,11 @@
                     <option value="custom">Custom</option>
                 </select>
                 <br>
-                <select name="effect-tag" id="effect-tag" class="select">
+                <select name="tag" id="tag" class="select">
                     <option value="none">None</option>
                 </select>
-                <button onclick="addEffectTagFilter()" class="button">Add</button>
-                <div style="display: inline-block;" id="effect-tags"></div>
+                <button onclick="addTagFilter()" class="button">Add</button>
+                <div style="display: inline-block;" id="tags"></div>
                 <br>
                 <select name="order" id="order" class="select" onchange="changeOrder()">
                     <option value="Name">Name</option>
@@ -73,8 +73,8 @@
                     <p id="popupDesc-text">Text</p>
                     <h2>Stats</h2>
                     <p id="popupDesc-cost&power">Cost/Power</p>
-                    <h2>Effect Tags</h2>
-                    <div id="popupDesc-effecttags"></div>
+                    <h2>Tags</h2>
+                    <div id="popupDesc-tags"></div>
                     <h2>Source/Author</h2>
                     <button id="popupDesc-source" class="popupSourceBtn">Source</button>
                 </div>
@@ -106,12 +106,12 @@
                         <h2>Stats</h2>
                         <input type="number" id="popupCreateCardCost" class="number-input" min="0" max="10" onchange="changeCreateCardCost()">
                         <input type="number" id="popupCreateCardPower" class="number-input" min="0" max="10" onchange="changeCreateCardPower()">
-                        <h2>Effect Tags</h2>
-                        <select name="effect-tag" id="popupCreateCardEffectTag" class="select">
+                        <h2>Tags</h2>
+                        <select name="tag" id="popupCreateCardTag" class="select">
                             <option value="none">None</option>
                         </select>
-                        <button onclick="addCreateCardEffectTag()" class="button">Add</button>
-                        <div style="display: inline-block;" id="popupCreateCardEffectTags"></div>
+                        <button onclick="addCreateCardTag()" class="button">Add</button>
+                        <div style="display: inline-block;" id="popupCreateCardTags"></div>
                         <h2>Source/Author</h2>
                         <input type="text" id="popupCreateCardSource" class="text-input" onchange="changeCreateCardSource()">
                 </div>

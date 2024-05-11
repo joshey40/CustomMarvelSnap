@@ -24,7 +24,7 @@ var officialLocations;
 getCards().then(data => {
     officialCards = data;
     console.log(officialCards);
-    addAllEffectTags();
+    addAllTags();
 });
 
 getLocations().then(data => {
@@ -34,32 +34,32 @@ getLocations().then(data => {
 
 var customCards;
 
-// effectTags
+// tags
 
-var effectTags = [];
+var tags = [];
 
-function addAllEffectTags() {
+function addAllTags() {
     for (var key in officialCards) {
         var card = officialCards[key];
         if (card.tags != null) {
             for (var i = 0; i < card.tags.length; i++) {
-                effectTags.push(card.tags[i]);
+                tags.push(card.tags[i]);
             }
         }
     }
     // Sort {tag_id, tag, tag_slug} by tag_id
-    effectTags.sort((a, b) => a.tag_id - b.tag_id);
+    tags.sort((a, b) => a.tag_id - b.tag_id);
     // Remove duplicates
-    effectTags = effectTags.filter((tag, index) => effectTags.findIndex(t => t.tag_id == tag.tag_id) == index);
-    var effectTagsSelect = document.getElementById("effect-tag");
-    effectTagsSelect.innerHTML = "";
-    for (var i = 0; i < effectTags.length; i++) {
+    tags = tags.filter((tag, index) => tags.findIndex(t => t.tag_id == tag.tag_id) == index);
+    var tagsSelect = document.getElementById("tag");
+    tagsSelect.innerHTML = "";
+    for (var i = 0; i < tags.length; i++) {
         var option = document.createElement("option");
-        option.value = effectTags[i].tag_slug;
-        option.textContent = effectTags[i].tag;
-        effectTagsSelect.appendChild(option);
+        option.value = tags[i].tag_slug;
+        option.textContent = tags[i].tag;
+        tagsSelect.appendChild(option);
     }
-    console.log(effectTags);
+    console.log(tags);
 }
 
 // Custom Characters List
@@ -91,7 +91,7 @@ var filters = {
     search: "",
     cardtype: "All",
     sources: "All",
-    effectTags: [],
+    tags: [],
     order: "Name",
     orderAscend: false
 };
@@ -120,14 +120,14 @@ function clearFilters() {
     document.getElementById("search").value = "";
     document.getElementById("cardTypeSelect").value = "All";
     document.getElementById("sourceSelect").value = "All";
-    document.getElementById("effect-tags").innerHTML = "";
+    document.getElementById("tags").innerHTML = "";
     document.getElementById("character-tags").innerHTML = "";
     document.getElementById("order").value = "Name";
     filters = {
         search: "",
         cardtype: "All",
         sources: "All",
-        effectTags: [],
+        tags: [],
         order: "Name",
         orderAscend: false
     };
@@ -153,25 +153,25 @@ function descendOrder() {
     applyFilters();
 }
 
-function addEffectTagFilter() {
-    var tag = document.getElementById("effect-tag").value;
+function addTagFilter() {
+    var tag = document.getElementById("tag").value;
     var tagDiv = document.createElement("div");
     tagDiv.textContent = tag;
     tagDiv.classList.add("tagsDiv");
 
-    if (filters.effectTags.indexOf(tag) == -1) {
-        filters.effectTags.push(tag);
+    if (filters.tags.indexOf(tag) == -1) {
+        filters.tags.push(tag);
         var deleteButton = document.createElement("button");
         deleteButton.textContent = "X";
         deleteButton.classList.add("tagsDivDelete");
         deleteButton.onclick = function() {
             tagDiv.remove();
-            filters.effectTags.splice(filters.effectTags.indexOf(tag), 1);
+            filters.tags.splice(filters.tags.indexOf(tag), 1);
             applyFilters();
         };
         tagDiv.appendChild(deleteButton);
     
-        document.getElementById("effect-tags").appendChild(tagDiv);
+        document.getElementById("tags").appendChild(tagDiv);
 
         applyFilters();
     }
@@ -195,7 +195,7 @@ async function applyFilters() {
         || card.text.toLowerCase().includes(filters.search.toLowerCase()))
         && (filters.cardtype == "All" || card.cardtype == filters.cardtype)
         && (filters.sources == "All" || (filters.sources == "custom" && card.custom) || (filters.sources == "official" && !card.custom))
-        && (filters.effectTags.length == 0 || (card.effectTags && filters.effectTags.every(tag => card.effectTags.includes(tag))));
+        && (filters.tags.length == 0 || (card.tags && filters.tags.every(tag => card.tags.includes(tag))));
     });
 
     if (filters.order == "Name") {
@@ -256,19 +256,19 @@ async function displayCard(card, characterListDiv) {
         document.getElementById("popupDesc-cardtype").textContent = card.cardtype;
         document.getElementById("popupDesc-cost&power").textContent = "Cost: " + card.cost + " Power: " + card.power;
         document.getElementById("popupDesc-text").textContent = card.text;
-        document.getElementById("popupDesc-effecttags").innerHTML = "";
-        if (card.effectTags != null && card.effectTags.length > 0) {
-            for (var j = 0; j < card.effectTags.length; j++) {
+        document.getElementById("popupDesc-tags").innerHTML = "";
+        if (card.tags != null && card.tags.length > 0) {
+            for (var j = 0; j < card.tags.length; j++) {
                 var tag = document.createElement("div");
-                tag.textContent = card.effectTags[j];
+                tag.textContent = card.tags[j];
                 tag.classList.add("tagsDiv");
-                document.getElementById("popupDesc-effecttags").appendChild(tag);
+                document.getElementById("popupDesc-tags").appendChild(tag);
             }
         } else {
             var tag = document.createElement("div");
             tag.textContent = "None";
             tag.classList.add("tagsDiv");
-            document.getElementById("popupDesc-effecttags").appendChild(tag);
+            document.getElementById("popupDesc-tags").appendChild(tag);
         }
         if (card.custom) {
             document.getElementById("popupDesc-source").textContent = "Custom";
@@ -424,14 +424,14 @@ function openCreateCardPopup() {
         option.value = customCharacters[i].name;
         datalist.appendChild(option);
     }
-    // Effect Tags
-    var effectTagsSelect = document.getElementById("popupCreateCardEffectTag");
-    effectTagsSelect.innerHTML = "";
-    for (var i = 0; i < effectTags.length; i++) {
+    // Tags
+    var tagsSelect = document.getElementById("popupCreateCardTag");
+    tagsSelect.innerHTML = "";
+    for (var i = 0; i < tags.length; i++) {
         var option = document.createElement("option");
-        option.value = effectTags[i];
-        option.textContent = effectTags[i];
-        effectTagsSelect.appendChild(option);
+        option.value = tags[i];
+        option.textContent = tags[i];
+        tagsSelect.appendChild(option);
     }
     // Reset Custom Card
     customCard = {
@@ -441,7 +441,7 @@ function openCreateCardPopup() {
         cost: 0,
         power: 0,
         text: "",
-        effectTags: [],
+        tags: [],
         cardSource: "",
     };
     // Name
@@ -506,7 +506,7 @@ var customCard = {
     cost: 0,
     power: 0,
     text: "",
-    effectTags: [],
+    tags: [],
     cardSource: "",
 };
 
@@ -562,25 +562,25 @@ function changeCreateCardText() {
     applyCreateCard();
 }
 
-function addCreateCardEffectTag() {
-    var tag = document.getElementById("popupCreateCardEffectTag").value;
+function addCreateCardTag() {
+    var tag = document.getElementById("popupCreateCardTag").value;
     var tagDiv = document.createElement("div");
     tagDiv.textContent = tag;
     tagDiv.classList.add("tagsDiv");
 
-    if (customCard.effectTags.indexOf(tag) == -1) {
-        customCard.effectTags.push(tag);
+    if (customCard.tags.indexOf(tag) == -1) {
+        customCard.tags.push(tag);
         var deleteButton = document.createElement("button");
         deleteButton.textContent = "X";
         deleteButton.classList.add("tagsDivDelete");
         deleteButton.onclick = function() {
             tagDiv.remove();
-            customCard.effectTags.splice(customCard.effectTags.indexOf(tag), 1);
+            customCard.tags.splice(customCard.tags.indexOf(tag), 1);
             applyCreateCard();
         };
         tagDiv.appendChild(deleteButton);
     
-        document.getElementById("popupCreateCardEffectTags").appendChild(tagDiv);
+        document.getElementById("popupCreateCardTags").appendChild(tagDiv);
 
         applyCreateCard();
     }
