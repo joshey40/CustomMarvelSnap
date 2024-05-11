@@ -43,14 +43,14 @@ function addAllEffectTags() {
         var card = officialCards[key];
         if (card.tags != null) {
             for (var i = 0; i < card.tags.length; i++) {
-                if (!effectTags.includes(card.tags[i])) {
-                    effectTags.push(card.tags[i]);
-                }
+                effectTags.push(card.tags[i]);
             }
         }
     }
     // Sort {tag_id, tag, tag_slug} by tag_id
     effectTags.sort((a, b) => a.tag_id - b.tag_id);
+    // Remove duplicates
+    effectTags = effectTags.filter((tag, index) => effectTags.findIndex(t => t.tag_id == tag.tag_id) == index);
     var effectTagsSelect = document.getElementById("effect-tag");
     effectTagsSelect.innerHTML = "";
     for (var i = 0; i < effectTags.length; i++) {
