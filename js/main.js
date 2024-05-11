@@ -118,7 +118,6 @@ function clearFilters() {
     document.getElementById("cardTypeSelect").value = "All";
     document.getElementById("sourceSelect").value = "All";
     document.getElementById("tags").innerHTML = "";
-    document.getElementById("character-tags").innerHTML = "";
     document.getElementById("order").value = "Name";
     filters = {
         search: "",
@@ -182,7 +181,7 @@ async function applyFilters() {
 
     var cards = [];
     for (var i = 0; i < officialCards.length; i++) {
-        var card = customCards[key];
+        var card = customCards[i];
         card.custom = false;
         cards.push(card);
     }
