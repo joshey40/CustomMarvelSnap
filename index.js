@@ -1,3 +1,5 @@
+
+
 // Web Server (index.html, main.js, style.css)
 const express = require('express');
 const { join } = require('path');
@@ -20,6 +22,9 @@ fetch(CARDS_API_URL)
     .then(response => response.json())
     .then(data => {
         var cards = data.success.cards;
+        webApp.get('/cards', (req, res) => {
+            res.send(cards);
+        });
     })
     .catch(error => console.log(error));
 
@@ -27,6 +32,9 @@ fetch(LOCATIONS_API_URL)
     .then(response => response.json())
     .then(data => {
         var locations = data.success.locations;
+        webApp.get('/locations', (req, res) => {
+            res.send(locations);
+        });
     })
     .catch(error => console.log(error));
 
