@@ -23,13 +23,11 @@ var officialLocations;
 
 getCards().then(data => {
     officialCards = data;
-    console.log(officialCards);
     addAllTags();
 });
 
 getLocations().then(data => {
     officialLocations = data;
-    console.log(officialLocations);
 });
 
 var customCards;
@@ -59,7 +57,6 @@ function addAllTags() {
         option.textContent = tags[i].tag;
         tagsSelect.appendChild(option);
     }
-    console.log(tags);
 }
 
 // Custom Characters List
@@ -184,11 +181,11 @@ async function applyFilters() {
     filterRunning = true;
 
     var cards = [];
-    for (var key in officialCards) {
-        var card = officialCards[key];
+    for (var card in officialCards) {
         card.custom = false;
         cards.push(card);
     }
+    console.log(cards);
 
     var filteredCards = cards.filter(function(card) {
         return (card.name.toLowerCase().includes(filters.search.toLowerCase())
@@ -247,7 +244,6 @@ async function displayCard(card, characterListDiv) {
             downloadButton.onclick = function() {
                 var link = document.createElement("a");
                 link.setAttribute("download", card.id + ".png");
-                console.log(document.getElementById("popupImgDiv"));
                 link.setAttribute("href", document.getElementById("popupImgDiv").getElementsByTagName("canvas")[0].toDataURL("image/png").replace("image/png", "image/octet-stream"));
                 link.click();
             };
