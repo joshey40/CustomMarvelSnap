@@ -180,6 +180,7 @@ async function applyFilters() {
     }
     filterRunning = true;
 
+    console.log(officialCards);
     var cards = [];
     for (var card in officialCards) {
         card.custom = false;
