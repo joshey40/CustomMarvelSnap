@@ -1,19 +1,21 @@
-function getCards() {
-    return fetch("/cards")
-        .then(response => response.json())
-        .then(data => {
-            return data;
-        })
-        .catch(error => console.log(error));
+async function getCards() {
+    try {
+        const response = await fetch("/cards");
+        const data = await response.json();
+        return data;
+    } catch (error) {
+        console.log(error);
+    }
 }
 
-function getLocations() {
-    return fetch("/locations")
-        .then(response => response.json())
-        .then(data => {
-            return data;
-        })
-        .catch(error => console.log(error));
+async function getLocations() {
+    try {
+        const response = await fetch("/locations");
+        const data = await response.json();
+        return data;
+    } catch (error) {
+        console.log(error);
+    }
 }
 
 console.log(getCards());
