@@ -18,25 +18,27 @@ webApp.get('/', (req, res) => {
 const CARDS_API_URL = "https://marvelsnapzone.com/getinfo/?searchtype=cards&searchcardstype=true"
 const LOCATIONS_API_URL = "https://marvelsnapzone.com/getinfo/?searchtype=locations&searchcardstype=true"
 
-fetch(CARDS_API_URL)
-    .then(response => response.json())
-    .then(data => {
-        var cards = data.success.cards;
-        webApp.get('/cards', (req, res) => {
-            res.send(cards);
-        });
-    })
-    .catch(error => console.log(error));
+webApp.get('/cards', async (req, res) => {
+    cards = await fetch(CARDS_API_URL)
+        .then(response => response.json())
+        .then(data => {
+            var cards = data.success.cards;
+            return cards;
+        })
+        .catch(error => console.log(error));
+    res.send(cards);
+});
 
-fetch(LOCATIONS_API_URL)
-    .then(response => response.json())
-    .then(data => {
-        var locations = data.success.locations;
-        webApp.get('/locations', (req, res) => {
-            res.send(locations);
-        });
-    })
-    .catch(error => console.log(error));
+webApp.get('/locations', async (req, res) => {
+    locations = await fetch(LOCATIONS_API_URL)
+        .then(response => response.json())
+        .then(data => {
+            var locations = data.success.locations;
+            return locations;
+        })
+        .catch(error => console.log(error));
+    res.send(locations);
+});
 
 // Done
 webApp.listen(process.env.PORT || port, () => {

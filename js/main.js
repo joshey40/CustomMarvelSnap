@@ -1,11 +1,23 @@
-fetch("/cards")
-    .then(response => response.json())
-    .then(data => {
-        console.log(data);
-    })
-    .catch(error => console.log(error));
+function getCards() {
+    return fetch("/cards")
+        .then(response => response.json())
+        .then(data => {
+            return data;
+        })
+        .catch(error => console.log(error));
+}
 
+function getLocations() {
+    return fetch("/locations")
+        .then(response => response.json())
+        .then(data => {
+            return data;
+        })
+        .catch(error => console.log(error));
+}
 
+console.log(getCards());
+console.log(getLocations());
 
 var officialCards;
 var customCards;
