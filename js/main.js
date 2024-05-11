@@ -18,20 +18,20 @@ async function getLocations() {
     }
 }
 
-// Output Cards and Locations to console
+var officialCards;
+var officialLocations;
+
 getCards().then(data => {
     officialCards = data;
     console.log(officialCards);
+    addAllEffectTags();
 });
 
 getLocations().then(data => {
-    customCards = data;
-    console.log(customCards);
+    officialLocations = data;
+    console.log(officialLocations);
 });
 
-
-
-var officialCards;
 var customCards;
 
 // effectTags
@@ -41,21 +41,22 @@ var effectTags = [];
 function addAllEffectTags() {
     for (var key in officialCards) {
         var card = officialCards[key];
-        if (card.effectTags != null) {
-            for (var i = 0; i < card.effectTags.length; i++) {
-                if (!effectTags.includes(card.effectTags[i])) {
-                    effectTags.push(card.effectTags[i]);
+        if (card.tags != null) {
+            for (var i = 0; i < card.tags.length; i++) {
+                if (!effectTags.includes(card.tags[i])) {
+                    effectTags.push(card.tags[i]);
                 }
             }
         }
     }
-    effectTags.sort();
+    // Sort {tag_id, tag, tag_slug} by tag_id
+    effectTags.sort((a, b) => a.tag_id - b.tag_id);
     var effectTagsSelect = document.getElementById("effect-tag");
     effectTagsSelect.innerHTML = "";
     for (var i = 0; i < effectTags.length; i++) {
         var option = document.createElement("option");
-        option.value = effectTags[i];
-        option.textContent = effectTags[i];
+        option.value = effectTags[i].tag_slug;
+        option.textContent = effectTags[i].tag;
         effectTagsSelect.appendChild(option);
     }
 }
