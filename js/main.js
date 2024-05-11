@@ -59,6 +59,7 @@ function addAllEffectTags() {
         option.textContent = effectTags[i].tag;
         effectTagsSelect.appendChild(option);
     }
+    console.log(effectTags);
 }
 
 // Custom Characters List
