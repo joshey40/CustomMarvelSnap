@@ -181,7 +181,7 @@ async function applyFilters() {
     filterRunning = true;
 
     var cards = [];
-    for (var key in customCards) {
+    for (var i = 0; i < officialCards.length; i++) {
         var card = customCards[key];
         card.custom = false;
         cards.push(card);
