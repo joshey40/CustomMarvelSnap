@@ -18,8 +18,18 @@ async function getLocations() {
     }
 }
 
-console.log(getCards());
-console.log(getLocations());
+// Output Cards and Locations to console
+getCards().then(data => {
+    officialCards = data;
+    console.log(officialCards);
+});
+
+getLocations().then(data => {
+    customCards = data;
+    console.log(customCards);
+});
+
+
 
 var officialCards;
 var customCards;
