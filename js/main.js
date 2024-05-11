@@ -180,9 +180,9 @@ async function applyFilters() {
     }
     filterRunning = true;
 
-    console.log(officialCards);
     var cards = [];
-    for (var card in officialCards) {
+    for (var key in customCards) {
+        var card = customCards[key];
         card.custom = false;
         cards.push(card);
     }
