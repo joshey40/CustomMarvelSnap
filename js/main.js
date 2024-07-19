@@ -23,6 +23,8 @@ var officialLocations;
 
 getCards().then(data => {
     officialCards = data;
+    // Flter out unreleased cards
+    officialCards = officialCards.filter(card => card.status != "unreleased");
     addAllTags();
 });
 
@@ -57,6 +59,7 @@ function addAllTags() {
         option.textContent = tags[i].tag;
         tagsSelect.appendChild(option);
     }
+    applyFilters()
 }
 
 // Custom Characters List
@@ -152,7 +155,7 @@ function descendOrder() {
 function addTagFilter() {
     var tag = document.getElementById("tag").value;
     var tagDiv = document.createElement("div");
-    tagDiv.textContent = tag;
+    tagDiv.textContent = document.getElementById("tag").textContent;
     tagDiv.classList.add("tagsDiv");
 
     if (filters.tags.indexOf(tag) == -1) {
@@ -169,6 +172,7 @@ function addTagFilter() {
     
         document.getElementById("tags").appendChild(tagDiv);
 
+        console.log(filters.tags);
         applyFilters();
     }
 }
@@ -183,16 +187,28 @@ async function applyFilters() {
     for (var i = 0; i < officialCards.length; i++) {
         var card = officialCards[i];
         card.custom = false;
+        if (card.source == "Not Available" || card.source == "None") {
+            card.type = "Token";
+        }
+        card.ability = card.ability.replace(/<span>/g, "").replace(/<\/span>/g, "");
         cards.push(card);
+        var variants = [];
+        for (var j = 0; j < card.variants.length; j++) {
+            if (card.variants[j] == null) {
+                continue;
+            }
+            variants.push(card.variants[j].art);
+        }
+        card.variants = variants;
     }
-    console.log(cards);
 
     var filteredCards = cards.filter(function(card) {
         return (card.name.toLowerCase().includes(filters.search.toLowerCase())
-        || card.text.toLowerCase().includes(filters.search.toLowerCase()))
-        && (filters.cardtype == "All" || card.cardtype == filters.cardtype)
+        || card.ability.toLowerCase().includes(filters.search.toLowerCase())
+        || card.flavor.toLowerCase().includes(filters.search.toLowerCase()))
+        && (filters.cardtype == "All" || card.type == filters.cardtype)
         && (filters.sources == "All" || (filters.sources == "custom" && card.custom) || (filters.sources == "official" && !card.custom))
-        && (filters.tags.length == 0 || (card.tags && filters.tags.every(tag => card.tags.includes(tag))));
+        && (filters.tags.length == 0 || (card.tags && card.tags.every(tag => filters.tags.includes(tag.tag_slug))));
     });
 
     if (filters.order == "Name") {
@@ -233,9 +249,25 @@ async function displayCard(card, characterListDiv) {
         document.getElementById("popup").style.visibility = "visible";
         var card = JSON.parse(this.getAttribute("data-character"));
         document.getElementById("popupTitle").textContent = card.name;
+        var variantSeleted = -1;
         document.getElementById("popupImgDiv").innerHTML = "";
-        var img = await generateCharcterImage(card, 500);
+        var img = await generateCharcterImage(card, 500, variantSeleted);
         document.getElementById("popupImgDiv").appendChild(img);
+        document.getElementById("popupImgDiv").onclick = async function() {
+            var oldVS = variantSeleted;
+            variantSeleted++;
+            if (card.variants == null || card.variants.length == 0) {
+                variantSeleted = -1;
+            } else if (variantSeleted >= card.variants.length) {
+                variantSeleted = -1;
+            }
+            if (oldVS != variantSeleted) {
+                var img = await generateCharcterImage(card, 500, variantSeleted);
+                document.getElementById("popupImgDiv").innerHTML = "";
+                document.getElementById("popupImgDiv").appendChild(img);
+            }
+        };
+
         if (card.custom) {
             var downloadButton = document.createElement("button");
             downloadButton.setAttribute("data-character", JSON.stringify(card));
@@ -249,14 +281,18 @@ async function displayCard(card, characterListDiv) {
             };
             document.getElementById("popupImgDiv").appendChild(downloadButton);
         }
-        document.getElementById("popupDesc-cardtype").textContent = card.cardtype;
+        document.getElementById("popupDesc-cardtype").textContent = card.type;
         document.getElementById("popupDesc-cost&power").textContent = "Cost: " + card.cost + " Power: " + card.power;
-        document.getElementById("popupDesc-text").textContent = card.text;
+        if (card.ability != null && card.ability != "") {
+            document.getElementById("popupDesc-text").textContent = card.ability;
+        } else {
+            document.getElementById("popupDesc-text").textContent = card.flavor;
+        }
         document.getElementById("popupDesc-tags").innerHTML = "";
         if (card.tags != null && card.tags.length > 0) {
             for (var j = 0; j < card.tags.length; j++) {
                 var tag = document.createElement("div");
-                tag.textContent = card.tags[j];
+                tag.textContent = card.tags[j].tag;
                 tag.classList.add("tagsDiv");
                 document.getElementById("popupDesc-tags").appendChild(tag);
             }
@@ -272,7 +308,7 @@ async function displayCard(card, characterListDiv) {
             document.getElementById("popupDesc-source").textContent = "Marvel Snap";
         }
         document.getElementById("popupDesc-source").onclick = function() {
-            window.open(card.cardSource, "_blank");
+            window.open(card.url, "_blank");
         };
     };
     // Image
@@ -283,13 +319,17 @@ async function displayCard(card, characterListDiv) {
     // Text
     var cardTextDiv = document.createElement("div");
     cardTextDiv.classList.add("cardTextDiv");
-    cardTextDiv.textContent = card.text;
+    if (card.ability != null && card.ability != "") {
+        cardTextDiv.textContent = card.ability;
+    } else {
+        cardTextDiv.textContent = card.flavor;
+    }
     cardDiv.appendChild(cardTextDiv);
     // Complete
     characterListDiv.appendChild(cardDiv);
 }
 
-async function generateCharcterImage(character, size) {
+async function generateCharcterImage(character, size, variantSelected = -1) {
     if (character[11] == "custom") {
         return await generateCustomCharacter("/img/default_cards/ghost_rider.png", null, null, character, "common", "none", size);
     } else {
@@ -301,7 +341,11 @@ async function generateCharcterImage(character, size) {
         img.onload = function() {
             ctx.drawImage(img, 0, 0, size, size);
         };
-        img.src = character.imageSource;
+        if (variantSelected == -1) {
+            img.src = character.art;
+        } else {
+            img.src = character.variants[variantSelected];
+        }
         return canvas;
     }
 }
